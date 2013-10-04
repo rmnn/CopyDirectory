@@ -1,0 +1,126 @@
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Random;
+
+import org.junit.Test;
+
+public class CopyDirectoryTest {
+
+	@Test
+	public void copy() {
+
+		File file1 = new File("/Directory1");
+		File file2 = new File("/Directory2");
+
+		try {
+			createNotSimpleDirectory();
+			Directory.copy(file1, file2);
+			assertTrue(compareTwoDirectories(file1, file2));
+			deleteDirectory(file1);
+			deleteDirectory(file2);
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
+
+	private void createNotSimpleDirectory() throws IOException {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 2; j++) {
+				for (int k = 0; k < 1; k++) {
+					File file = new File("/Directory1/sub" + i + "/sub-sub" + j
+							+ "/sub-sub-sub" + k);
+					file.mkdirs();
+					createSomeFiles(new File("/Directory1/"));
+					createSomeFiles(new File("/Directory1/sub" + i));
+					createSomeFiles(new File("/Directory1/sub" + i + "/sub-sub"
+							+ j));
+				}
+			}
+		}
+	}
+
+	private static void createSomeFiles(File file) throws IOException {
+		Random rn = new Random();
+		for (int i = 0; i <= (rn.nextInt() % 15); i++) {
+			File file1 = new File(file.getAbsolutePath() + "/file" + i);
+			file1.createNewFile();
+			OutputStream out = new FileOutputStream(file1);
+			byte[] buf = new byte[1024];
+			Random random = new Random();
+			for (int j = 0; j <= 10; j++) {
+				out.write(buf, 0, j);
+				buf[Math.abs(random.nextInt() % 1024)] = (byte) (random
+						.nextInt() % 128);
+			}
+			out.close();
+		}
+
+	}
+
+	private boolean compareTwoDirectories(File file1, File file2)
+			throws Exception {
+
+		if (file1.isDirectory()) {
+
+			String[] children1 = file1.list();
+			String[] children2 = file2.list();
+			if (children1.length != children2.length) {
+				return false;
+			}
+			for (int i = 0; i < children1.length; i++) {
+				if (!compareTwoDirectories(new File(file1, children1[i]),
+						new File(file2, children1[i]))) { // children1 here too
+															// because file1 and
+															// file2 should have
+															// the same child
+					return false;
+				}
+			}
+		} else {
+
+			if (!compare(file1, file2)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean compare(File f1, File f2) throws Exception {
+		if (f1.length() != f2.length()) {
+			return false;
+		}
+		boolean res = true;
+		FileReader readerF1 = new FileReader(f1);
+		FileReader readerF2 = new FileReader(f2);
+		int byteA;
+		int byteB;
+		while ((byteA = readerF1.read()) > 0) {
+			byteB = readerF2.read();
+			if (byteA != byteB) {
+				res = false;
+				break;
+			}
+		}
+		readerF1.close();
+		readerF2.close();
+		return res;
+	}
+
+	public void deleteDirectory(File file) {
+		if (!file.exists())
+			return;
+		if (file.isDirectory()) {
+			for (File f : file.listFiles())
+				deleteDirectory(f);
+			file.delete();
+		} else {
+			file.delete();
+		}
+	}
+}
