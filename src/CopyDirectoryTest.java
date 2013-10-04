@@ -15,15 +15,15 @@ public class CopyDirectoryTest {
 	@Test
 	public void copy() {
 
-		File file1 = new File("/Directory1");
-		File file2 = new File("/Directory2");
+		File source = new File("/Directory1");
+		File target = new File("/Directory2");
 
 		try {
 			createNotSimpleDirectory();
-			Directory.copy(file1, file2);
-			assertTrue(compareTwoDirectories(file1, file2));
-			deleteDirectory(file1);
-			deleteDirectory(file2);
+			Directory.copy(source, target);
+			assertTrue(compareTwoDirectories(source, target));
+			deleteDirectory(source);
+			deleteDirectory(target);
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -40,6 +40,8 @@ public class CopyDirectoryTest {
 					createSomeFiles(new File("/Directory1/sub" + i));
 					createSomeFiles(new File("/Directory1/sub" + i + "/sub-sub"
 							+ j));
+					createSomeFiles(new File("/Directory1/sub" + i + "/sub-sub"
+							+ j + "/sub-sub-sub" + k));
 				}
 			}
 		}
@@ -47,12 +49,12 @@ public class CopyDirectoryTest {
 
 	private static void createSomeFiles(File file) throws IOException {
 		Random rn = new Random();
+		Random random = new Random();
 		for (int i = 0; i <= (rn.nextInt() % 15); i++) {
 			File file1 = new File(file.getAbsolutePath() + "/file" + i);
 			file1.createNewFile();
 			OutputStream out = new FileOutputStream(file1);
 			byte[] buf = new byte[1024];
-			Random random = new Random();
 			for (int j = 0; j <= 10; j++) {
 				out.write(buf, 0, j);
 				buf[Math.abs(random.nextInt() % 1024)] = (byte) (random
@@ -67,7 +69,7 @@ public class CopyDirectoryTest {
 			throws Exception {
 
 		if (file1.isDirectory()) {
-
+			
 			String[] children1 = file1.list();
 			String[] children2 = file2.list();
 			if (children1.length != children2.length) {
