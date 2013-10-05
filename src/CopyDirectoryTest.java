@@ -47,7 +47,7 @@ public class CopyDirectoryTest {
 		}
 	}
 
-	private static void createSomeFiles(File file) throws IOException {
+	private void createSomeFiles(File file) throws IOException {
 		Random rn = new Random();
 		Random random = new Random();
 		for (int i = 0; i <= (rn.nextInt() % 15); i++) {
@@ -93,7 +93,7 @@ public class CopyDirectoryTest {
 		return true;
 	}
 
-	public static boolean compare(File f1, File f2) throws Exception {
+	private boolean compare(File f1, File f2) throws Exception {
 		if (f1.length() != f2.length()) {
 			return false;
 		}
@@ -114,7 +114,7 @@ public class CopyDirectoryTest {
 		return res;
 	}
 
-	public void deleteDirectory(File file) {
+	private void deleteDirectory(File file) {
 		if (!file.exists())
 			return;
 		if (file.isDirectory()) {
