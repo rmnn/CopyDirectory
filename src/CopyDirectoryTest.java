@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Random;
 
 import org.junit.Test;
@@ -13,7 +14,7 @@ import org.junit.Test;
 public class CopyDirectoryTest {
 
 	@Test
-	public void copy() {
+	public void copyTest() {
 
 		File source = new File("/Directory1");
 		File target = new File("/Directory2");
@@ -55,6 +56,7 @@ public class CopyDirectoryTest {
 			file1.createNewFile();
 			OutputStream out = new FileOutputStream(file1);
 			byte[] buf = new byte[1024];
+			Arrays.fill(buf, (byte) 0);
 			for (int j = 0; j <= 10; j++) {
 				out.write(buf, 0, j);
 				buf[Math.abs(random.nextInt() % 1024)] = (byte) (random
@@ -69,7 +71,7 @@ public class CopyDirectoryTest {
 			throws Exception {
 
 		if (file1.isDirectory()) {
-			
+
 			String[] children1 = file1.list();
 			String[] children2 = file2.list();
 			if (children1.length != children2.length) {
