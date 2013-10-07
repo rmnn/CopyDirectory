@@ -50,8 +50,8 @@ public class CopyDirectoryTest {
 
 	private void createSomeFiles(File file) throws IOException {
 		Random rn = new Random();
-		Random random = new Random();
-		for (int i = 0; i <= (rn.nextInt() % 15); i++) {
+		int count = rn.nextInt() % 15;
+		for (int i = 0; i <= count; i++) {
 			File file1 = new File(file.getAbsolutePath() + "/file" + i);
 			file1.createNewFile();
 			OutputStream out = new FileOutputStream(file1);
@@ -59,8 +59,7 @@ public class CopyDirectoryTest {
 			Arrays.fill(buf, (byte) 0);
 			for (int j = 0; j <= 10; j++) {
 				out.write(buf, 0, j);
-				buf[Math.abs(random.nextInt() % 1024)] = (byte) (random
-						.nextInt() % 128);
+				buf[Math.abs(rn.nextInt() % 1024)] = (byte) (rn.nextInt() % 128);
 			}
 			out.close();
 		}
