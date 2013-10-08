@@ -58,7 +58,7 @@ public class CopyDirectoryTest {
 			byte[] buf = new byte[1024];
 			Arrays.fill(buf, (byte) 0);
 			for (int j = 0; j <= 10; j++) {
-				out.write(buf, 0, j);
+				out.write(buf, 0, 1024);
 				buf[Math.abs(rn.nextInt() % 1024)] = (byte) (rn.nextInt() % 128);
 			}
 			out.close();
