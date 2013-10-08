@@ -21,7 +21,7 @@ public class CopyDirectoryTest {
 
 		try {
 			createNotSimpleDirectory();
-			Directory.copy(source, target);
+			Files.copy(source, target);
 			assertTrue(compareTwoDirectories(source, target));
 			deleteDirectory(source);
 			deleteDirectory(target);
