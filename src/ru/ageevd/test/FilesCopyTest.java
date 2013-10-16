@@ -100,11 +100,11 @@ public class FilesCopyTest {
 					true, null);
 			compareTwoFileTrees(sourceDirectory, targetDirectory);
 
-			// it means that we get no mistakes
+			// it means that we got no mistakes
 			assertEquals(os.toString(), "");
 
 			// let's add 'virus'
-			Path virus = Paths.get(sourceDirectory + File.separator + "virus");
+			Path virus = sourceDirectory.resolve("virus");
 			Files.createFile(virus);
 			f = new FileOutputStream(virus.toFile());
 			f.write(getInfectedSequence());
