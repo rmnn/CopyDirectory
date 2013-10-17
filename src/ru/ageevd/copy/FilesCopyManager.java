@@ -29,7 +29,7 @@ import ru.ageevd.plugins.FileCopyPlugin;
 public class FilesCopyManager {
 
 	/**
-	 * Copy source file of directory to target location. If {@code prompt} is
+	 * Copy source file or directory to target location. If {@code prompt} is
 	 * true then prompt user to overwrite target if it exists. The
 	 * {@code preserve} parameter determines if file attributes should be
 	 * copied/preserved.
